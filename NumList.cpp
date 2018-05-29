@@ -1,130 +1,104 @@
 #include "NumList.h"
 
-//Default ctor
-NumList::NumList()
-{
+using namespace std;
 
-	size = 0;
-	capacity = 12;
-	numListArray = new int[capacity];
-
+/* Default CtoR */
+NumList::NumList() {
+	listSize = 0;
+	listCapacity = 1;
+	numListArray = new int[listCapacity];
 }
 
-//Parameterized ctor
-NumList::NumList(int wordLineNumber)
-{
-	size = 0;
-	capacity = 1;
-	numListArray = new int[capacity];
-	numListArray[0] = wordLineNumber;
+/* Parameterized CtoR */
+NumList::NumList(int number) {
+	listSize = 1;
+	listCapacity = 1;
+	numListArray = new int[listCapacity];
+	numListArray[0] = number;
 }
 
-//Copy ctor
-NumList::NumList(const NumList & nl)
-{
+/* Copy CtoR */
+NumList::NumList(const NumList &nl) {
 	numListArray = NULL;
-	*this = nl;
-
+	this->listCapacity = nl.listCapacity;
+	this->listSize = nl.listSize;
+	this->numListArray = nl.numListArray;
 }
 
-//Operator assigment = overloading
-NumList &NumList::operator=(const NumList &rhs)
-{
-	if (this == rhs) {
-		return *this;
-	} else {
-		delete[] numListArray;
-		capacity = rhs.getCapacity();
-		numListArray = new int[capacity];
-		size = rhs.getSize();
-		for (int i = 0; i < rhs.getSize() - 1; i++) {
-			append(rhs.getPointer()[i]);
-		}
-		return *this;
-	}
+/* Get list capacity */
+int NumList::getListCapacity() const{
+	return listCapacity;
 }
 
-//Destructor
-NumList::~NumList()
-{
-	capacity = 0;
-	size = 0;
-	delete[] numListArray;
-	numListArray = nullptr;
+/* Get list size */
+int NumList::getListSize() const {
+	return listSize;
 }
 
-bool NumList::empty() const
-{
-	return size <= 0;
+/* Check list is empty or not */
+bool NumList::isEmpty() const {
+	return (listSize <= 0);
 }
 
-bool NumList::isDataExist(int data) const
+/* Check list is full or not */
+bool NumList::isFull() const {
+	return (listSize >= listCapacity);
+}
+
+/* Get line number from specific position */
+int NumList::getData(int position) const {
+	if (position >= listSize)
+		return -1;
+	return numListArray[position];
+}
+
+/* Check if data exist in list */
+bool NumList::isExist(int data) const
 {
-	for (int i = 0;i<size;i++)
+	for (int i = 0; i<listSize; i++)
 	{
 		if (numListArray[i] == data)
 			return true;
 	}
-
 	return false;
 }
 
-bool NumList::full() const {
-	return (size >= capacity);
-}
-
-void NumList::resize() {
-	int newCapacity = getCapacity() * 2; // define doubled size
-	int * tempArr = new int[newCapacity + 1]; // allocate new storage
-	for (int i = 0; i < tempArr.getSize() - 1; i++) {
-		append(tempArr.getPointer()[i]);
-	}
-	capacity = newCapacity; // set new lineCapacity
-	delete[] linePtr; // release dynamic storage currently used by linePtr
-	linePtr = tempArr; // update linePtr to new array in dynamic storage
-}
-
+/* Add new data to list */
 void NumList::append(int data)
 {
 
-	if (!isDataExist(data))
+	if (!isExist(data))
 	{
-		numListArray[size] = data;
-		size++;
+		numListArray[listSize] = data;
+		listSize++;
 	}
 
 }
 
-int NumList::getData(int position) const
-{
-	if (position >= 0 && position <= capacity) {
-		return numListArray[position];
-	}
-	else
-		return -1;//  ERROR '-1':position is not valid
-}
-
-bool NumList::setData(int data, int position)
-{
-	if (position >= 0 && position <= capacity) {
-		numListArray[position] = data;
-		return true;
-	}
-	else
-		return false;
-}
-
-int NumList::getSize() const
-{
-	return size;
-}
-
-int NumList::getCapacity() const
-{
-	return capacity;
-}
-
+/* Get pointer of list */
 const int * NumList::getPointer() const
 {
 	return numListArray;
+}
+
+/* Operator = Overloading */
+NumList &NumList::operator=(const NumList &rhsNL) {
+	if (this == &rhsNL) {
+		return *this;
+	}
+	else {
+		delete[] numListArray;
+		listCapacity = rhsNL.getListCapacity();
+		listSize = 0;
+		numListArray = new int[listCapacity];
+		for (int i = 0; i < rhsNL.getListSize(); i++){
+			append(rhsNL.getPointer()[i]);
+		}
+	}
+}
+
+/* Destructor */
+NumList::~NumList()
+{
+	delete[] numListArray;
 }

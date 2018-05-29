@@ -1,35 +1,33 @@
 #ifndef NumList_H
 #define NumList_H
+
 #include <iostream>
 #include <fstream>
-#include <iomanip>
+
 using namespace std;
 
 class NumList {
-
 private:
-	int * numListArray;
-	int size;
-	int capacity;
+	int *numListArray;
+	int listSize;
+	int listCapacity;
 	void resize();
 
 public:
 	NumList();
-	NumList(int wordLineNumber);
-	NumList(const NumList & nl);
-	NumList &operator=(const NumList &nl);
+	NumList(int lineNumber);
+	NumList(const NumList &nl);
+	NumList &operator=(const NumList &rhsNl);
 	~NumList();
-
-	bool empty() const;
-	bool isDataExist(int data) const;
-	bool full() const;
-	void append(int data);
-	int  getData(int position) const;
-	bool setData(int data, int position);
-	int getSize() const;
-	int getCapacity() const;
+	bool isEmpty() const;
+	bool isExist(int number) const;
+	void append(int number);
+	void setElement(int position, int number);
+	int getData(int position) const;
+	bool isFull() const;
+	int getListSize() const;
+	int getListCapacity() const;
 	const int * getPointer() const;
-
 };
 
 #endif
